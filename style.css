@@ -1,0 +1,32 @@
+.heading
+{
+    top:0px;
+    border-color:yellow;
+    border-width: 10px;
+    width: 100%;
+}
+#header
+{
+    float:left;
+    display: inline;
+}
+body
+{
+    background: url("pingpong.jpg");
+    background-size: 100%;
+}
+#footer
+{
+    width:100%;
+    font-size: 20px;
+    background-color: black;
+    color: white;
+    bottom:0px;
+    position: fixed;
+}
+canvas
+{
+    border-color: aqua;
+    border-width: 5px;
+    margin-left:0px;
+}
