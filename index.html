@@ -17,11 +17,48 @@
     <body>
         <center>
             <div class="btn btn-warning heading">
-                <h2 id="header">AI Ping Pong Game</h2>
+                <h3 id="header">AI Ping Pong Game</h3>
+                <button class="btn btn-primary pingpong_int" data-toggle="modal" data-target="#modal">Instructions</button>
+                
             </div>
-            <div id="footer">
-                <p>Note: move your right wrist up and down to move your paddle(red in color)</p>
+            <br>
+            <button class="btn btn-success start" onclick="start()">Play a Match</button>
+            <br>
+            <br>
+            <button class="btn btn-danger start">Restrat</button>
+            <br>
+            <br>
+            <button class="btn btn-warning start">Status: <span id="status"></span></button>
+            <br>
+            <div id="canvas"></div>
+
+            <!--Modal code starts here-->
+
+            <div id="modal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="close" data-dismiss="modal">&times;</div>
+                            <h2>Instructions</h2>
+                            <hr>
+                        </div>
+                        <div class="modal-body">
+                            <br>
+                            <br>
+                            <h3>1. Keep the Device that you are using 3-4 feet away from you</h3>
+                            <br>
+                            <h3>2. Use your right Wrist to move your paddle(red in color) up and down and smash the ball!</h3>
+                            <br>
+                            <h3>3. click on play a game to start the match</h3>
+                            <br>
+                            <h3>4. if you win/lose click on restart to play a new match!</h3>
+                            <br>
+                            <h3>5. The ball speed will be increasing in time, so play carefully</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!--modal code ends here-->
         </center>
     </body>
 </html>

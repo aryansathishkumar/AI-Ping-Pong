@@ -9,9 +9,10 @@ circle_y = 40;
 function setup()
 {
     canvas = createCanvas(1100,400);
+    canvas.parent("canvas");
+
     video = createCapture(VIDEO);
     video.hide();
-    canvas.center();
 
     var poseNet = ml5.poseNet(video, modelloaded);
     poseNet.on("pose", getposes);
