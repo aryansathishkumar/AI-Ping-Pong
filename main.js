@@ -1,21 +1,50 @@
-function preload()
-{
 
-}
+
+var paddle2 =10,paddle1=10;
+
+var paddle1X = 10,paddle1Height = 110;
+var paddle2Y = 685,paddle2Height = 70;
+
+var score1 = 0, score2 =0;
+var paddle1Y;
+
+var  playerscore =0;
+var audio1;
+var pcscore =0;
+
 right_wrist_y = "";
-computer = 0;
-circle_x = 1075;
-circle_y = 40;
-function setup()
+//ball x and y and speedx speed y and radius
+var ball = {
+    x:350/2,
+    y:480/2,
+    r:20,
+    dx:3,
+    dy:3
+}
+game_status = "";
+function setup(){
+  var canvas =  createCanvas(700,600);
+  video = createCapture(VIDEO);
+  video.size(400,400);
+  video.parent("video");
+  canvas.parent("canvas");
+
+  var poseNet = ml5.poseNet(video, modelloaded);
+  poseNet.on("pose", getposes);
+}
+function start()
 {
-    canvas = createCanvas(1100,400);
-    canvas.parent("canvas");
-
-    video = createCapture(VIDEO);
-    video.hide();
-
-    var poseNet = ml5.poseNet(video, modelloaded);
-    poseNet.on("pose", getposes);
+  game_status = "start";
+  document.getElementById("status").innerHTML = "Model Loaded";
+}
+function restart()
+{
+  game_status = "restart"
+  document.getElementById("status").innerHTML = "Model Loaded";
+}
+function modelloaded()
+{
+    console.log("poseNet model is loaded");
 }
 function getposes(results)
 {
@@ -23,29 +52,142 @@ function getposes(results)
     
     right_wrist_y = results[0].pose.rightWrist.y;
 }
-function draw()
-{
-    image(video, 0, 0, 400, 400);
-    if(computer >= 320)
-    {
-        computer = 0;
+function draw(){
+if(game_status == "start" | game_status == "restart")
+ {
+   background(0); 
 
-    }
-    else if(computer >= 0)
-    {
-        if(computer <= 320)
-        computer = computer + 2;
-    }
-    fill("black");
-    rect(400,0,700+100,400);
-    fill("red");
-    rect(340+400, 0, 20, 400)
-    fill("aqua");
-    rect(700+400, computer, -25, 90);
-    fill("red")
-    rect(0+400, right_wrist_y, 25, 90);
+   fill("black");
+   stroke("black");
+   rect(680,0,20,700);
+
+   fill("black");
+   stroke("black");
+   rect(0,0,20,700);
+ 
+   //funtion paddleInCanvas call 
+   paddleInCanvas();
+ 
+   //left paddle
+   fill(250,0,0);
+    stroke(0,0,250);
+    strokeWeight(0.5);
+   paddle1Y = right_wrist_y; 
+   console.log("paddle1Y = "+paddle1Y);
+   rect(paddle1X,right_wrist_y,paddle1,paddle1Height,100);
+   
+   
+    //pc computer paddle
+    fill("#FFA500");
+    stroke("#FFA500");
+   var paddle2y =ball.y-paddle2Height/2;  rect(paddle2Y,paddle2y,paddle2,paddle2Height,100);
+    
+    //function midline call
+    midline();
+    
+    //funtion drawScore call 
+   drawScore();
+   
+   //function models call  
+   models();
+   
+   //function move call which in very important
+    move();
+ }
 }
-function modelloaded()
-{
-    console.log("poseNet model is loaded");
+
+
+
+//function reset when ball does notcame in the contact of paddle
+function reset(){
+   ball.x = width/2+100,
+   ball.y = height/2+100;
+   ball.dx=3;
+   ball.dy =3;
+   
+}
+
+
+//function midline draw a line in center
+function midline(){
+    for(i=0;i<480;i+=10) {
+    var y = 0;
+    fill("white");
+    stroke(0);
+    rect(width/2,y+i,10,480);
+    }
+}
+
+
+//function drawScore show scores
+function drawScore(){
+    textAlign(CENTER);
+    textSize(20);
+    fill("white");
+    stroke(250,0,0)
+    text("Player:",100,50)
+    text(playerscore,140,50);
+    text("Computer:",500,50)
+    text(pcscore,555,50)
+}
+
+
+//very important function of this game
+function move(){
+   fill(50,350,0);
+   stroke(255,0,0);
+   strokeWeight(0.5);
+   ellipse(ball.x,ball.y,ball.r,20)
+   ball.x = ball.x + ball.dx;
+   ball.y = ball.y + ball.dy;
+   if(ball.x+ball.r>width-ball.r/2){
+       ball.dx=-ball.dx-0.5;       
+   }
+  if (ball.x-2.5*ball.r/2< 0){
+  if (ball.y >= paddle1Y&& ball.y <= paddle1Y + paddle1Height) {
+    ball.dx = -ball.dx+0.5; 
+  }
+  else{
+    pcscore++;
+    reset();
+  }
+}
+if(pcscore == 3){
+    fill("#FFA500");
+    stroke(0)
+    rect(0,0,width,height-1);
+    fill("white");
+    stroke("white");
+    textSize(25)
+    text("Game Over!☹☹",width/2,height/2);
+    text("Click on Reset and try your best!",width/2,height/2+30);
+    game_status = "nope"
+    pcscore = 0;
+}
+   if(ball.y+ball.r > height || ball.y-ball.r <0){
+       ball.dy =- ball.dy;
+   }   
+}
+
+
+//width height of canvas speed of ball 
+function models(){
+    textSize(18);
+    fill(255);
+    noStroke();
+    text("Width:"+width,135,15);
+    text("Speed:"+abs(ball.dx),50,15);
+    text("Height:"+height,235,15)
+}
+
+
+//this function help to not go the paddle out of canvas
+function paddleInCanvas(){
+  if(right_wrist_y > 600)
+  {
+    right_wrist_y = 510;
+  }
+  if(right_wrist_y < 0){
+    right_wrist_y =0;
+  }  
 }

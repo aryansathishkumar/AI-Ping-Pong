@@ -12,7 +12,7 @@
 }
 body
 {
-    background: url("pingpong.jpg");
+    background: url("background1.jpg");
     background-size: 100%;
 }
 .pingpong_int
@@ -35,4 +35,8 @@ body
     font-size: 18px;
     width: fit-content;
     height:fit-content;
+}
+video
+{
+    margin-bottom: 6%;
 }
